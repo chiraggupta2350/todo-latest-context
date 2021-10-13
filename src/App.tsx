@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react'
+import "./index"
+import ContextProvider, { Contextvalue } from './components/contextapi'
 
-function App() {
+const Todos = () => {
+ const {Items,InputData,toggleSubmit,deleteItem,ItemData,editTodo,input} = useContext(Contextvalue)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className="center">
+      <input  type = "text" value={input} onChange={(e)=>{InputData(e)}}/>
+      {
+        toggleSubmit?<i className="fa fa-plus add-btn" onClick={()=>{ItemData()}}></i>:
+        <i className="far fa-edit btn"  onClick={()=>{ItemData()}}  ></i>
+      }
     </div>
-  );
+    <div className="center">
+      <ol>
+       {Items.map((itemval)=>{
+         console.log(Items)
+         return <li key={itemval.id}>{itemval.data}<i className="far fa-trash-alt btn" onClick={()=>deleteItem(itemval.id)}></i>
+          <i className="far fa-edit btn" onClick={()=>editTodo(itemval.id)}></i></li> 
+       })}
+       </ol>
+    </div>
+    </>
+  )
 }
 
-export default App;
+export default () => (
+  <ContextProvider>
+    <Todos />
+  </ContextProvider>
+);
+
